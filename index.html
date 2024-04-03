@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +9,15 @@
   <!-- BOOTSTRAP STYLES -->
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
+
 <body>
   <!-- HEADER -->
-  <header>
+  <header class="mb-4">
     <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
       <div class="container">
         <a class="navbar-brand" href="#">Bool Factory</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -34,6 +37,80 @@
     </nav>
   </header>
   <!-- HEADER END -->
+  <!-- MAIN -->
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-8">
+          <h1 class="fs-3">Richiesta Preventivo</h1>
+          <p>Compila il form per richiedere un preventivo per i nostri servizi di sviluppo.</p>
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Nome *</label>
+              <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="mb-3">
+              <label for="lastname" class="form-label">Cognome *</label>
+              <input type="text" class="form-control" id="lastname" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email *</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="job-select" class="form-label">Tipo di lavoro *</label>
+              <select class="form-select" id="job-select" required>
+                <option selected>Seleziona il tipo di lavoro</option>
+                <option value="1">Backend Development</option>
+                <option value="2">Frontend Development</option>
+                <option value="3">Project Analysis</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="textarea" class="form-label">Descrizione</label>
+              <textarea class="form-control" id="textarea" rows="5"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="promocode" class="form-label">Codice Promozionale (opzionale)</label>
+              <input type="promocode" class="form-control" id="promocode">
+            </div>
+            <div class="form-check mb-5">
+              <input class="form-check-input" type="checkbox" id="privacypolicy">
+              <label class="form-check-label" for="privacypolicy">
+                Accetto la Privacy Policy
+              </label>
+            </div>
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <div class="text-center mb-3 mb-lg-0">
+                  <button type="submit" class="btn btn-primary">Invia il tuo preventivo</button>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6">
+                <div class="text-center">
+                  <h2 class="fs-4">Prezzo finale</h2>
+                  <p>0,00€</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-12 col-lg-4">
+          <aside>
+            <div class="card" style="width: 18rem;">
+              <img src="..." class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- MAIN END -->
   <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>
