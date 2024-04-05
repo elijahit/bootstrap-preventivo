@@ -59,6 +59,8 @@ function validationForm (name, lastname, email, job, privacypolicy) {
     privacypolicy.classList.remove('is-invalid');
     privacypolicy.classList.add('is-valid');
   }
+
+  return checker > 0 ? false : true;
 }
 
 function resolveForm (e) {
@@ -71,9 +73,8 @@ function resolveForm (e) {
   const privacypolicy = document.querySelector('#form-preventivo #privacypolicy');
 
   let validationCheck = validationForm(name, lastname, email, job, privacypolicy);
-
   if(validationCheck) {
-
+    // SE TUTTO VA A BUON FINE DURANTE LA VALIDAZIONE
   }
 }
 
