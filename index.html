@@ -44,22 +44,24 @@
         <div class="col-12 col-lg-8">
           <h1 class="fs-3">Richiesta Preventivo</h1>
           <p>Compila il form per richiedere un preventivo per i nostri servizi di sviluppo.</p>
-          <form>
+          <div id="descriptionNoValid">
+          </div>
+          <form id="form-preventivo">
             <div class="mb-3">
               <label for="name" class="form-label">Nome *</label>
-              <input type="text" class="form-control" id="name" required>
+              <input type="text" class="form-control" id="name">
             </div>
             <div class="mb-3">
               <label for="lastname" class="form-label">Cognome *</label>
-              <input type="text" class="form-control" id="lastname" required>
+              <input type="text" class="form-control" id="lastname">
             </div>
             <div class="mb-3">
               <label for="email" class="form-label">Email *</label>
-              <input type="email" class="form-control" id="email" required>
+              <input type="email" class="form-control" id="email">
             </div>
             <div class="mb-3">
               <label for="job-select" class="form-label">Tipo di lavoro *</label>
-              <select class="form-select" id="job-select" required>
+              <select class="form-select" id="job-select">
                 <option selected>Seleziona il tipo di lavoro</option>
                 <option value="1">Backend Development</option>
                 <option value="2">Frontend Development</option>
@@ -123,6 +125,7 @@
   </footer>
   <!-- FOOTER END -->
   <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./script/app.js"></script>
 </body>
 
 </html>
