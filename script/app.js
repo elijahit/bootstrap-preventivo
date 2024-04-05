@@ -63,6 +63,35 @@ function validationForm (name, lastname, email, job, privacypolicy) {
   return checker > 0 ? false : true;
 }
 
+function validationPromo (promoCode) {
+  const descriptionDiv = document.querySelector('#info-promocode');
+  descriptionDiv.innerHTML = '';
+  promoCode.classList.remove('is-invalid');
+  promoCode.classList.remove('is-valid');
+
+  // L'oggetto promoObject racchiude tutti i codici promozionali e le rispettive percentuali di sconto da assegnare - non ho assegnato solo il 25 percento ma ho assegnato lo sconto in base al suo finale nel promocode.
+  const promoObject = {
+    "YHDNU32": 32,
+    "JANJC63": 63,
+    "PWKCN25": 25,
+    "SJDPO96": 96,
+    "POCIE24": 24
+  }
+  
+  if(promoObject[promoCode.value]) {
+    //SE IL PROMOCODE è VALIDO
+    promoCode.classList.remove('is-invalid');
+    promoCode.classList.add('is-valid');
+    descriptionDiv.innerHTML = `<b>Sconto del ${promoObject[promoCode.value]}% applicato</b>`;
+  } else {
+    if(promoCode.value.length > 0) {
+      promoCode.classList.add('is-invalid');
+      descriptionDiv.innerHTML = `<b>Nessuno sconto applicato</b>`;
+    }
+  }
+  return promoObject[promoCode.value] ? promoObject[promoCode.value] : 0;
+}
+
 function resolveForm (e) {
   e.preventDefault();
   const name = document.querySelector('#form-preventivo #name');
@@ -74,7 +103,8 @@ function resolveForm (e) {
 
   let validationCheck = validationForm(name, lastname, email, job, privacypolicy);
   if(validationCheck) {
-    // SE TUTTO VA A BUON FINE DURANTE LA VALIDAZIONE
+    let promoCodeChecker = validationPromo(promoCode);
+    console.log(promoCodeChecker)
   }
 }
 
