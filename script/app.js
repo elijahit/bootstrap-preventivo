@@ -1,5 +1,4 @@
 const formElement = document.querySelector('#form-preventivo');
-let submitCount = 0;
 
 formElement.addEventListener('submit', resolveForm);
 
@@ -133,6 +132,7 @@ function resetForm (name, lastname, email, job, promoCode, privacypolicy) {
   email.classList.remove('is-valid');
   job.classList.remove('is-valid');
   promoCode.classList.remove('is-valid');
+  promoCode.classList.remove('is-invalid');
   privacypolicy.classList.remove('is-valid');
 
 }
@@ -145,6 +145,7 @@ function resolveForm(e) {
   const job = document.querySelector('#form-preventivo #job-select');
   const promoCode = document.querySelector('#form-preventivo #promocode');
   const privacypolicy = document.querySelector('#form-preventivo #privacypolicy');
+  const description = document.querySelector('#desc-text');
 
   let validationCheck = validationForm(name, lastname, email, job, privacypolicy);
   if (validationCheck) {
@@ -152,14 +153,6 @@ function resolveForm(e) {
 
     let priceEnd = new Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'}).format(priceResolve(promoCode,job)).split(',');
     priceElement.innerHTML = `<b>€ ${priceEnd[0]}</b>,<span class="text-secondary">${priceEnd[1].slice(0, priceEnd[1].length-1)}</span>`
-
-    submitCount++;
-    if(submitCount > 1) {
-      // Resetto il form e il prezzo solo se viene cliccato il submit due volte.
-      resetForm(name, lastname, email, job, promoCode, privacypolicy);
-      priceElement.innerHTML = `<b>€ 00</b>,<span class="text-secondary">00</span>`
-      submitCount = 0;
-    }
     
   }
 }
