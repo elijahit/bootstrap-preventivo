@@ -1,21 +1,22 @@
 const formElement = document.querySelector('#form-preventivo');
+let submitCount = 0;
 
 formElement.addEventListener('submit', resolveForm);
 
-function validationForm (name, lastname, email, job, privacypolicy) {
+function validationForm(name, lastname, email, job, privacypolicy) {
   const descriptionDiv = document.querySelector('#descriptionNoValid');
   descriptionDiv.innerHTML = '';
   let checker = 0;
 
-  function classNoValid (element, text) {
+  function classNoValid(element, text) {
     element.classList.add('is-invalid');
     descriptionDiv.innerHTML += `<p class="m-0 is-invalid text-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-reverse-fill" viewBox="0 0 16 16">
     <path d="M0 3a2 2 0 0 1 2-2h7.08a2 2 0 0 1 1.519.698l4.843 5.651a1 1 0 0 1 0 1.302L10.6 14.3a2 2 0 0 1-1.52.7H2a2 2 0 0 1-2-2zm9.854 2.854a.5.5 0 0 0-.708-.708L7 7.293 4.854 5.146a.5.5 0 1 0-.708.708L6.293 8l-2.147 2.146a.5.5 0 0 0 .708.708L7 8.707l2.146 2.147a.5.5 0 0 0 .708-.708L7.707 8z"/>
   </svg> ${text}</p>`;
-  } 
+  }
 
   // VALIDAZIONE DEL NOME
-  if(name.value.length < 2) {
+  if (name.value.length < 2) {
     checker++;
     classNoValid(name, "Il nome è obbligatorio e di almeno 2 caratteri.");
   } else {
@@ -23,7 +24,7 @@ function validationForm (name, lastname, email, job, privacypolicy) {
     name.classList.add('is-valid');
   }
   // VALIDAZIONE DEL COGNOME
-  if(lastname.value.length < 2) {
+  if (lastname.value.length < 2) {
     checker++;
     classNoValid(lastname, "Il cognome è obbligatorio e di almeno 2 caratteri.");
   } else {
@@ -32,7 +33,7 @@ function validationForm (name, lastname, email, job, privacypolicy) {
   }
   // VALIDAZIONE EMAIL
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if(!emailRegex.test(email.value)) {
+  if (!emailRegex.test(email.value)) {
     checker++;
     classNoValid(email, "L'email è obbligatorio nel formato example@example.com");
   } else {
@@ -40,11 +41,8 @@ function validationForm (name, lastname, email, job, privacypolicy) {
     email.classList.add('is-valid');
   }
   // VALIDAZIONE JOBS
-  let jobsChecker = 
-  job.value == 1 ? true : 
-  job.value == 2 ? true : 
-  job.value == 3 ? true : false;
-  if(!jobsChecker) {
+  let jobsChecker = jobObjectResolve(job.value) ? true : false;
+  if (!jobsChecker) {
     checker++;
     classNoValid(job, "Il tipo di lavoro non è valido, selezionane uno valido.");
   } else {
@@ -52,7 +50,7 @@ function validationForm (name, lastname, email, job, privacypolicy) {
     job.classList.add('is-valid');
   }
   // VALIDAZIONE PRIVACY POLICY
-  if(!privacypolicy.checked) {
+  if (!privacypolicy.checked) {
     checker++;
     classNoValid(privacypolicy, "E' obbligatorio accettare la Privacy Policy.");
   } else {
@@ -63,7 +61,7 @@ function validationForm (name, lastname, email, job, privacypolicy) {
   return checker > 0 ? false : true;
 }
 
-function validationPromo (promoCode) {
+function validationPromo(promoCode) {
   const descriptionDiv = document.querySelector('#info-promocode');
   descriptionDiv.innerHTML = '';
   promoCode.classList.remove('is-invalid');
@@ -77,23 +75,26 @@ function validationPromo (promoCode) {
     "SJDPO96": 96,
     "POCIE24": 24
   }
-  
-  if(promoObject[promoCode.value]) {
+
+  if (promoObject[promoCode.value]) {
     //SE IL PROMOCODE è VALIDO
     promoCode.classList.remove('is-invalid');
     promoCode.classList.add('is-valid');
     descriptionDiv.innerHTML = `<b>Sconto del ${promoObject[promoCode.value]}% applicato</b>`;
   } else {
-    if(promoCode.value.length > 0) {
+    if (promoCode.value.length > 0) {
       promoCode.classList.add('is-invalid');
       descriptionDiv.innerHTML = `<b>Nessuno sconto applicato</b>`;
+    } else {
+      promoCode.classList.remove('is-invalid');
     }
   }
   return promoObject[promoCode.value] ? promoObject[promoCode.value] : 0;
 }
 
-function jobSalaryResolve(jobValue) {
+function jobObjectResolve(jobValue) {
   //Le ore di lavoro assegnate sono senza alcun criterio e sono tutte 10 ore.
+  //Questa funzione permette di assegnare direttamente a quest'oggetto le nuove tipologie di lavoro dinamicamente e implementarle in tutto il codice, anche nella validazione.
   const jobObject = {
     1: {
       name: "Sviluppo Backend",
@@ -114,7 +115,29 @@ function jobSalaryResolve(jobValue) {
   return jobObject[jobValue];
 }
 
-function resolveForm (e) {
+function priceResolve(promoCode, job) {
+  let promoCodePercent = validationPromo(promoCode);
+  let jobSalaryObject = jobObjectResolve(job.value);
+
+  let priceCalcs = jobSalaryObject.priceHour * jobSalaryObject.hourJob
+  let discountCalcs = priceCalcs * promoCodePercent / 100;
+
+  return promoCodePercent != 0 ? priceCalcs - discountCalcs : priceCalcs;
+}
+
+function resetForm (name, lastname, email, job, promoCode, privacypolicy) {
+  name.value = "", lastname.value = "", email.value = "", job.value = "", promoCode.value = "", privacypolicy.checked = false;
+
+  name.classList.remove('is-valid');
+  lastname.classList.remove('is-valid');
+  email.classList.remove('is-valid');
+  job.classList.remove('is-valid');
+  promoCode.classList.remove('is-valid');
+  privacypolicy.classList.remove('is-valid');
+
+}
+
+function resolveForm(e) {
   e.preventDefault();
   const name = document.querySelector('#form-preventivo #name');
   const lastname = document.querySelector('#form-preventivo #lastname');
@@ -124,10 +147,20 @@ function resolveForm (e) {
   const privacypolicy = document.querySelector('#form-preventivo #privacypolicy');
 
   let validationCheck = validationForm(name, lastname, email, job, privacypolicy);
-  if(validationCheck) {
-    let promoCodePercent = validationPromo(promoCode);
-    let jobSalaryObject = jobSalaryResolve(job.value);
+  if (validationCheck) {
+    const priceElement = document.querySelector('#priceReturn');
 
+    let priceEnd = new Intl.NumberFormat('it-IT', {style: 'currency', currency: 'EUR'}).format(priceResolve(promoCode,job)).split(',');
+    priceElement.innerHTML = `<b>€ ${priceEnd[0]}</b>,<span class="text-secondary">${priceEnd[1].slice(0, priceEnd[1].length-1)}</span>`
+
+    submitCount++;
+    if(submitCount > 1) {
+      // Resetto il form e il prezzo solo se viene cliccato il submit due volte.
+      resetForm(name, lastname, email, job, promoCode, privacypolicy);
+      priceElement.innerHTML = `<b>€ 00</b>,<span class="text-secondary">00</span>`
+      submitCount = 0;
+    }
+    
   }
 }
 
