@@ -92,6 +92,28 @@ function validationPromo (promoCode) {
   return promoObject[promoCode.value] ? promoObject[promoCode.value] : 0;
 }
 
+function jobSalaryResolve(jobValue) {
+  //Le ore di lavoro assegnate sono senza alcun criterio e sono tutte 10 ore.
+  const jobObject = {
+    1: {
+      name: "Sviluppo Backend",
+      priceHour: 20.50,
+      hourJob: 10
+    },
+    2: {
+      name: "Sviluppo frontend",
+      priceHour: 15.30,
+      hourJob: 10
+    },
+    3: {
+      name: "Analisi progettuale",
+      priceHour: 33.60,
+      hourJob: 10
+    }
+  }
+  return jobObject[jobValue];
+}
+
 function resolveForm (e) {
   e.preventDefault();
   const name = document.querySelector('#form-preventivo #name');
@@ -103,8 +125,9 @@ function resolveForm (e) {
 
   let validationCheck = validationForm(name, lastname, email, job, privacypolicy);
   if(validationCheck) {
-    let promoCodeChecker = validationPromo(promoCode);
-    console.log(promoCodeChecker)
+    let promoCodePercent = validationPromo(promoCode);
+    let jobSalaryObject = jobSalaryResolve(job.value);
+
   }
 }
 
